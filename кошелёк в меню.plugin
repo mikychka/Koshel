@@ -1,0 +1,36 @@
+from android.content import Intent
+from android.net import Uri
+from org.telegram.messenger import ApplicationLoader
+from base_plugin import BasePlugin, MenuItemType, MenuItemData
+from org.telegram.ui import ChatActivity
+
+__id__ = "monetka"
+__name__ = "Phone's Wallet"
+__description__ = "Adds a Walt to the side menu."
+__author__ = "@VantaKuller"
+__icon__ = "emoji_mini/28"
+__version__ = "1.0"
+__app_version__ = ">=13.1.1"
+__sdk_version__ = ">=1.4.6.4"
+
+class BurmoldowicWalt(BasePlugin):
+    def on_plugin_load(self):
+        self.log("Монетка: плагин спущён")
+
+        self.add_menu_item(MenuItemData(
+            menu_type=MenuItemType.DRAWER_MENU,
+            text="Walt",
+            priority=1,
+            icon="wallet_transaction_walt",
+            on_click=lambda ctx: self.open_wallet()
+        ))
+
+    def open_wallet(self):
+        self.log("Монетка: пипка тапнута")
+        try:
+            intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/walt?startapp"))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            ApplicationLoader.applicationContext.startActivity(intent)
+            self.log("Монетка: ссылка walt?startapp отправлена")
+        except Exception as e:
+            self.log(f"Монетка: Ошибачка: {e}")
